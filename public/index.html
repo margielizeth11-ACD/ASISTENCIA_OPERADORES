@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Asistencia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📋 Sistema de Control de Asistencia</h1>
+            <p class="subtitle">Operadores de Cómputo</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="control-asistencia">Control Diario</button>
+            <button class="tab-btn" data-tab="reportes">Reportes</button>
+            <button class="tab-btn" data-tab="importar">Importar Operadores</button>
+        </nav>
+
+        <!-- TAB 1: Control Diario -->
+        <section id="control-asistencia" class="tab-content active">
+            <div class="section-header">
+                <h2>Control de Asistencia - Hoy</h2>
+                <div class="fecha-actual" id="fechaActual"></div>
+            </div>
+
+            <!-- Filtro de búsqueda -->
+            <div class="search-container">
+                <input type="text" id="buscarOperador" placeholder="🔍 Buscar operador por nombre o DNI...">
+            </div>
+
+            <!-- Lista de operadores -->
+            <div class="operadores-grid" id="operadoresGrid">
+                <div class="loading">Cargando operadores...</div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Reportes -->
+        <section id="reportes" class="tab-content">
+            <div class="section-header">
+                <h2>Reportes de Asistencia</h2>
+            </div>
+
+            <!-- Filtros de reporte -->
+            <div class="reporte-filtros">
+                <div class="filtro-grupo">
+                    <label for="fechaInicio">Fecha Inicio:</label>
+                    <input type="date" id="fechaInicio">
+                </div>
+                <div class="filtro-grupo">
+                    <label for="fechaFin">Fecha Fin:</label>
+                    <input type="date" id="fechaFin">
+                </div>
+                <div class="filtro-grupo">
+                    <label for="operadorFiltro">Operador:</label>
+                    <select id="operadorFiltro">
+                        <option value="">Todos los operadores</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="btnGenerarReporte">Generar Reporte</button>
+                <button class="btn btn-success" id="btnExportarCSV">Exportar CSV</button>
+            </div>
+
+            <!-- Tabla de reporte -->
+            <div class="reporte-tabla">
+                <table id="tablaReporte" class="tabla-reporte">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Teléfono</th>
+                            <th>Área</th>
+                            <th>Fecha</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaReporteBody">
+                        <tr><td colspan="8" class="empty">Selecciona un rango de fechas y haz clic en "Generar Reporte"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 3: Importar Operadores -->
+        <section id="importar" class="tab-content">
+            <div class="section-header">
+                <h2>Importar Operadores</h2>
+            </div>
+
+            <div class="importar-container">
+                <div class="instrucciones">
+                    <p>Pegue los datos de los operadores en el formato siguiente (uno por línea):</p>
+                    <p><code>Nombre | DNI | Teléfono</code></p>
+                    <p style="color: #999; font-size: 0.9em;">Ejemplo: CABEZAS MENDOZA LUIS ANGEL | 75811677 | 902123812</p>
+                </div>
+
+                <textarea id="textareaImportar" placeholder="Pegue aquí los datos de los operadores..." rows="10"></textarea>
+                
+                <button class="btn btn-primary" id="btnImportar">Importar Operadores</button>
+                <div id="mensajeImportacion" class="mensaje"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal de detalles -->
+    <div id="modalDetalles" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalNombre"></h2>
+            <div class="modal-info">
+                <p><strong>DNI:</strong> <span id="modalDNI"></span></p>
+                <p><strong>Teléfono:</strong> <span id="modalTelefono"></span></p>
+                <p><strong>Área:</strong> <span id="modalArea"></span></p>
+                <p><strong>Función:</strong> <span id="modalFuncion"></span></p>
+            </div>
+            <div class="modal-asistencia">
+                <h3>Asistencia de Hoy</h3>
+                <p id="modalEntrada"><strong>Entrada:</strong> <span id="horaEntrada">No registrada</span></p>
+                <p id="modalSalida"><strong>Salida:</strong> <span id="horaSalida">No registrada</span></p>
+            </div>
+            <div class="modal-acciones">
+                <button class="btn btn-primary" id="btnEntrada">📥 Registrar Entrada</button>
+                <button class="btn btn-warning" id="btnSalida">📤 Registrar Salida</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
